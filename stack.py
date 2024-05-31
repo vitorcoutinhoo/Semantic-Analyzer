@@ -1,4 +1,4 @@
-# pylint: disable = C0303, C0114
+# pylint: disable = C0303, C0114, C0116, C0115
 
 # Author: Vítor Coutinho
 # Arquive to build the stack of scopes
@@ -6,47 +6,36 @@
 from table import Table
 
 class Stack:
-    """
-        A class to represent a stack of scopes.
-
-        Attributes:
-            stack (list): A list of Table objects.
-    """
     def __init__(self):
         self.stack = []
     
     def push(self, scope: Table):
-        """
-            Add a new scope to the stack.
-        """
-        self.stack.append(scope)
+        # insere um escopo na pilha
+        self.stack.insert(0, scope)
 
     def pop(self):
-        """
-            Remove the top scope from the stack.
-        """
-        return self.stack.pop()
+        # remove o escopo da pilha
+        return self.stack.pop(0)
 
     def copy(self):
-        """
-            Return a copy of the top scope.
-        """
+        # retorna uma cópia da pilha
         return self.stack[-1]
 
     def search(self, lex: str):
-        """
-            Search for a lexeme in the top scope.
-
-            Args:
-                lex (str): The lexeme to be searched.
-
-            Returns:
-                The entire row of the lexeme.
-        """
-        scope = self.pop()
-
-        for row in scope.content:
-            if row[1] == lex:
-                return row
+        # copia a pilha
+        copy = self.stack.copy()
+        while copy:
+            # da pop na pilha até achar o escopo que contém o lexema
+            scope = copy.pop(0)
+            
+            for row in scope.content:
+                if lex in row:
+                    return row[3] # retorna o valor do lexema
             
         return None
+
+    def show(self):
+        # printa cada escopo da pilha
+        for scope in self.stack:
+            scope.show()
+        
