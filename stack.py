@@ -9,6 +9,10 @@ class Stack:
     def __init__(self):
         self.stack = []
     
+    def size(self):
+        # retorna o tamanho da pilha
+        return len(self.stack)
+    
     def push(self, scope: Table):
         # insere um escopo na pilha
         self.stack.insert(0, scope)
@@ -17,22 +21,27 @@ class Stack:
         # remove o escopo da pilha
         return self.stack.pop(0)
 
-    def copy(self):
-        # retorna uma cópia da pilha
-        return self.stack[-1]
+    def top(self):
+        # retorna uma cópia do topo da pilha
+        return self.stack[0]
 
     def search(self, lex: str):
         # copia a pilha
         copy = self.stack.copy()
         while copy:
-            # da pop na pilha até achar o escopo que contém o lexema
+            # procura o lexema em cada escopo da pilha
             scope = copy.pop(0)
-            
-            for row in scope.content:
-                if lex in row:
-                    return row[3] # retorna o valor do lexema
-            
+            if scope.search(lex):
+                return scope.search(lex)
+        
         return None
+    
+    def update(self, lex: str, tp: str, value: str):
+        # atualiza o tipo e o valor de um lexema
+        for scope in self.stack:
+            if scope.search(lex):
+                scope.update(lex, tp, value)
+                break
 
     def show(self):
         # printa cada escopo da pilha

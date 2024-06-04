@@ -9,11 +9,13 @@ def read(file):
     
     with open(file, "r", encoding="utf-8") as f:
         lines = f.readlines()
-
+        
         # retira as linhas vazias
         for line in lines:
             if line != "\n":
                 string.append(line.strip(" \n\t").split(" ", 1))
+            else:
+                string.append(line)
 
         # separa os elementos de cada linha
         for row in string:
@@ -26,14 +28,14 @@ def read(file):
 
                 # separa por igual
                 if "=" in row[i]:
-                    row[i] = row[i].split("=")
+                    row[i] = row[i].partition("=")
                     row[i] = [x.strip() for x in row[i]]
 
                 # separa lista de lista
                 if isinstance(row[i], list):
                     for j in range(len(row[i])):
                         if "=" in row[i][j]:
-                            row[i][j] = row[i][j].split("=")
+                            row[i][j] = row[i][j].partition("=")
                             row[i][j] = [x.strip() for x in row[i][j]]
 
     return string

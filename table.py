@@ -4,7 +4,8 @@
 # Arquive to build the symbol table
 
 class Table:
-    def __init__(self):
+    def __init__(self, nome: str):
+        self.name = nome
         self.content = []
     
     def add(self, tk, lex, tp, value):
@@ -25,6 +26,13 @@ class Table:
                 # remove uma declaração da tabela
                 self.content.remove(row)
                 break
+    
+    def search(self, lex):
+        # procura um lexema na tabela
+        for row in self.content:
+            if row[1] == lex:
+                return row
+        return None
 
     def show(self):
         header = ('-'*31 + "\n" 
@@ -37,4 +45,6 @@ class Table:
             body.append(f"{row[0]:>4}{row[1]:>7} {row[2]:>8} {row[3]:>8}")
         
         res = header + "\n".join(body)
+        print(f"{"-"* 31}\n{self.name:^31}")
         print(res + "\n" + '-'*31 + "\n")
+        
