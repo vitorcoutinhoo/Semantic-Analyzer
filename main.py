@@ -93,7 +93,7 @@ def recognize_commands(row, linha: int):
 
     # se for uma cadeia
     if row[0] == "CADEIA":
-        process_row(row, "CADEIA", "")
+        process_row(row, "CADEIA", '""')
 
     # se for um número
     if row[0] == "NUMERO":
